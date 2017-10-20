@@ -298,13 +298,11 @@ style quick_button_text:
 
 screen navigation():
 
-    vbox:
+    hbox:
         style_prefix "navigation"
 
         xpos gui.navigation_xpos
-        yalign 0.5
-
-        spacing gui.navigation_spacing
+        yalign 0.95
 
         if main_menu:
 
@@ -314,26 +312,47 @@ screen navigation():
 
             textbutton _("History") action ShowMenu("history")
 
+            text _(" / "):
+                style "navigation_separator"
+
             textbutton _("Save") action ShowMenu("save")
+
+        text _(" / "):
+            style "navigation_separator"
 
         textbutton _("Load") action ShowMenu("load")
 
-        textbutton _("Preferences") action ShowMenu("preferences")
+        text _(" / "):
+            style "navigation_separator"
+
+        textbutton _("Options") action ShowMenu("preferences")
 
         if _in_replay:
+
+            text _(" / "):
+                style "navigation_separator"
 
             textbutton _("End Replay") action EndReplay(confirm=True)
 
         elif not main_menu:
 
+            text _(" / "):
+                style "navigation_separator"
+
             textbutton _("Main Menu") action MainMenu()
 
-        textbutton _("About") action ShowMenu("about")
+        #textbutton _("About") action ShowMenu("about")
 
         if renpy.variant("pc"):
 
+            text _(" / "):
+                style "navigation_separator"
+
             ## Help isn't necessary or relevant to mobile devices.
             textbutton _("Help") action ShowMenu("help")
+
+            text _(" / "):
+                style "navigation_separator"
 
             ## The quit button is banned on iOS and unnecessary on Android.
             textbutton _("Quit") action Quit(confirm=not main_menu)
@@ -343,11 +362,21 @@ style navigation_button is gui_button
 style navigation_button_text is gui_button_text
 
 style navigation_button:
-    size_group "navigation"
+    size_group None
     properties gui.button_properties("navigation_button")
 
 style navigation_button_text:
     properties gui.button_text_properties("navigation_button")
+    font "gui/font/sad films.ttf"
+    outlines [ (2, "#afe9ff", 1, 1), (1, "#fff", 0, 0) ]
+    hover_outlines [ (2, "#ff71ce", 1, 1), (1, "#fff", 0, 0) ]
+    size 42
+
+style navigation_separator:
+    yalign 0.5
+    size 42
+    color gui.accent_color
+    font "gui/font/sad films.ttf"
 
 
 ## Main Menu screen ############################################################
@@ -368,6 +397,9 @@ screen main_menu():
     ## This empty frame darkens the main menu.
     frame:
         pass
+
+    frame:
+        style "main_menu_logo"
 
     ## The use statement includes another screen inside this one. The actual
     ## contents of the main menu are in the navigation screen.
@@ -390,10 +422,10 @@ style main_menu_title is main_menu_text
 style main_menu_version is main_menu_text
 
 style main_menu_frame:
-    xsize 420
-    yfill True
+    ysize 0.2
+    xfill True
 
-    background "gui/overlay/main_menu.png"
+    background "gui/overlay/navigation.png"
 
 style main_menu_vbox:
     xalign 1.0
@@ -411,6 +443,11 @@ style main_menu_text:
 
 style main_menu_title:
     size gui.title_text_size
+
+style main_menu_logo:
+    ysize 0.2
+
+    background "logo.png"
 
 
 ## Game Menu screen ############################################################
@@ -434,11 +471,7 @@ screen game_menu(title, scroll=None):
     frame:
         style "game_menu_outer_frame"
 
-        hbox:
-
-            ## Reserve space for the navigation section.
-            frame:
-                style "game_menu_navigation_frame"
+        vbox:
 
             frame:
                 style "game_menu_content_frame"
@@ -473,6 +506,10 @@ screen game_menu(title, scroll=None):
 
                     transclude
 
+    ## Reserve space for the navigation section.
+    frame:
+        style "game_menu_navigation_frame"
+
     use navigation
 
     textbutton _("Return"):
@@ -501,13 +538,16 @@ style return_button_text is navigation_button_text
 
 style game_menu_outer_frame:
     bottom_padding 45
-    top_padding 180
+    top_padding 120
+    left_padding 420
 
-    background "gui/overlay/game_menu.png"
+    #background "gui/overlay/game_menu.png"
 
 style game_menu_navigation_frame:
-    xsize 420
-    yfill True
+    ysize 0.2
+    xfill True
+    
+    background "gui/overlay/navigation.png"
 
 style game_menu_content_frame:
     left_margin 60
@@ -533,9 +573,8 @@ style game_menu_label_text:
     yalign 0.5
 
 style return_button:
-    xpos gui.navigation_xpos
-    yalign 1.0
-    yoffset -45
+    xalign 0.9
+    yalign 0.95
 
 
 ## About screen ################################################################
@@ -616,23 +655,23 @@ screen file_slots(title):
             order_reverse True
 
             ## The page name, which can be edited by clicking on a button.
-            button:
-                style "page_label"
-
-                key_events True
-                xalign 0.5
-                action page_name_value.Toggle()
-
-                input:
-                    style "page_label_text"
-                    value page_name_value
+            #button:
+            #    style "page_label"
+            #
+            #    key_events True
+            #    xalign 0.5
+            #    action page_name_value.Toggle()
+            #
+            #    input:
+            #        style "page_label_text"
+            #        value page_name_value
 
             ## The grid of file slots.
             grid gui.file_slot_cols gui.file_slot_rows:
                 style_prefix "slot"
 
                 xalign 0.5
-                yalign 0.5
+                yalign 0.0
 
                 spacing gui.slot_spacing
 
@@ -660,7 +699,7 @@ screen file_slots(title):
                 style_prefix "page"
 
                 xalign 0.5
-                yalign 1.0
+                yalign 0.8
 
                 spacing gui.page_spacing
 
@@ -707,6 +746,7 @@ style slot_button:
 
 style slot_button_text:
     properties gui.button_text_properties("slot_button")
+    font gui.default_font
 
 
 ## Preferences screen ##########################################################
@@ -725,7 +765,7 @@ screen preferences():
     else:
         $ cols = 4
 
-    use game_menu(_("Preferences"), scroll="viewport"):
+    use game_menu(_("Options"), scroll="viewport"):
 
         vbox:
 
@@ -981,7 +1021,7 @@ screen help():
         style_prefix "help"
 
         vbox:
-            spacing 23
+            spacing 12
 
             hbox:
 
@@ -1118,7 +1158,7 @@ style help_label:
 style help_label_text:
     size gui.text_size
     xalign 1.0
-    text_align 1.0
+    text_align 0.0
 
 
 
