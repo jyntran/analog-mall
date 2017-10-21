@@ -19,10 +19,9 @@ style input:
     color gui.accent_color
 
 style hyperlink_text:
-    color gui.accent_color
-    hover_color gui.hover_color
+    color gui.selected_color
     hover_underline True
-
+    font gui.interface_font
 
 style gui_text:
     font gui.interface_font
@@ -367,16 +366,17 @@ style navigation_button:
 
 style navigation_button_text:
     properties gui.button_text_properties("navigation_button")
-    font "gui/font/sad films.ttf"
-    outlines [ (2, "#afe9ff", 1, 1), (1, "#fff", 0, 0) ]
-    hover_outlines [ (2, "#ff71ce", 1, 1), (1, "#fff", 0, 0) ]
+    font "gui/font/AIRSTREAM.ttf"
+    outlines [ (1, "#ffffff00", 2, 2), (1, "#fff", 0, 0) ]
+    hover_outlines [ (1, "#afe9ff", 2, 2), (1, "#ffcfea", 0, 0) ]
+    hover_color gui.accent_color
     size 42
 
 style navigation_separator:
     yalign 0.5
     size 42
     color gui.accent_color
-    font "gui/font/sad films.ttf"
+    font gui.interface_font
 
 
 ## Main Menu screen ############################################################
@@ -539,7 +539,7 @@ style return_button_text is navigation_button_text
 style game_menu_outer_frame:
     bottom_padding 45
     top_padding 120
-    left_padding 420
+    left_padding 320
 
     #background "gui/overlay/game_menu.png"
 
@@ -571,6 +571,9 @@ style game_menu_label_text:
     size gui.title_text_size
     color gui.accent_color
     yalign 0.5
+    font "gui/font/AIRSTREAM.ttf"
+    outlines [ (2, "#afe9ff", 1, 1), (1, "#fff", 0, 0) ]
+    hover_outlines [ (2, "#ff71ce", 1, 1), (1, "#fff", 0, 0) ]
 
 style return_button:
     xalign 0.9
@@ -686,34 +689,44 @@ screen file_slots(title):
 
                         add FileScreenshot(slot) xalign 0.5
 
-                        text FileTime(slot, format=_("{#file_time}%A, %B %d %Y, %H:%M"), empty=_("empty slot")):
-                            style "slot_time_text"
+                        frame:
+                            background "#ffffff"
+                            text FileTime(slot, format=_("{#file_time}%b %d %Y %H:%M"), empty=_("404")):
+                                style "slot_time_text"
+                            ypos -37
+                            xalign 1.0
+                            left_padding 9
 
                         text FileSaveName(slot):
                             style "slot_name_text"
 
                         key "save_delete" action FileDelete(slot)
 
-            ## Buttons to access other pages.
-            hbox:
-                style_prefix "page"
-
+            frame:
+                background "#ffffffcf"
+                xpadding 0
+                ypadding 0
+                
                 xalign 0.5
                 yalign 0.8
 
-                spacing gui.page_spacing
+                ## Buttons to access other pages.
+                hbox:
+                    style_prefix "page"
 
-                textbutton _("<") action FilePagePrevious()
+                    spacing gui.page_spacing
 
-                textbutton _("{#auto_page}A") action FilePage("auto")
+                    textbutton _("<") action FilePagePrevious()
 
-                textbutton _("{#quick_page}Q") action FilePage("quick")
+                    textbutton _("{#auto_page}A") action FilePage("auto")
 
-                ## range(1, 10) gives the numbers from 1 to 9.
-                for page in range(1, 10):
-                    textbutton "[page]" action FilePage(page)
+                    textbutton _("{#quick_page}Q") action FilePage("quick")
 
-                textbutton _(">") action FilePageNext()
+                    ## range(1, 10) gives the numbers from 1 to 9.
+                    for page in range(1, 10):
+                        textbutton "[page]" action FilePage(page)
+
+                    textbutton _(">") action FilePageNext()
 
 
 style page_label is gui_label
@@ -746,8 +759,8 @@ style slot_button:
 
 style slot_button_text:
     properties gui.button_text_properties("slot_button")
-    font gui.default_font
-
+    idle_color "#ffffff"
+    hover_color gui.selected_color
 
 ## Preferences screen ##########################################################
 ##
@@ -767,86 +780,91 @@ screen preferences():
 
     use game_menu(_("Options"), scroll="viewport"):
 
-        vbox:
+        frame:
+            background "#ffffffcf"
+            xpadding 48
+            ypadding 24
 
-            hbox:
-                box_wrap True
+            vbox:
+                xfill True
 
-                if renpy.variant("pc"):
+                hbox:
+                    box_wrap True
+
+                    if renpy.variant("pc"):
+
+                        vbox:
+                            style_prefix "radio"
+                            label _("Display")
+                            textbutton _("Window") action Preference("display", "window")
+                            textbutton _("Fullscreen") action Preference("display", "fullscreen")
 
                     vbox:
                         style_prefix "radio"
-                        label _("Display")
-                        textbutton _("Window") action Preference("display", "window")
-                        textbutton _("Fullscreen") action Preference("display", "fullscreen")
+                        label _("Rollback Side")
+                        textbutton _("Disable") action Preference("rollback side", "disable")
+                        textbutton _("Left") action Preference("rollback side", "left")
+                        textbutton _("Right") action Preference("rollback side", "right")
 
-                vbox:
-                    style_prefix "radio"
-                    label _("Rollback Side")
-                    textbutton _("Disable") action Preference("rollback side", "disable")
-                    textbutton _("Left") action Preference("rollback side", "left")
-                    textbutton _("Right") action Preference("rollback side", "right")
+                    vbox:
+                        style_prefix "check"
+                        label _("Skip")
+                        textbutton _("Unseen Text") action Preference("skip", "toggle")
+                        textbutton _("After Choices") action Preference("after choices", "toggle")
+                        textbutton _("Transitions") action InvertSelected(Preference("transitions", "toggle"))
 
-                vbox:
-                    style_prefix "check"
-                    label _("Skip")
-                    textbutton _("Unseen Text") action Preference("skip", "toggle")
-                    textbutton _("After Choices") action Preference("after choices", "toggle")
-                    textbutton _("Transitions") action InvertSelected(Preference("transitions", "toggle"))
+                    ## Additional vboxes of type "radio_pref" or "check_pref" can be
+                    ## added here, to add additional creator-defined preferences.
 
-                ## Additional vboxes of type "radio_pref" or "check_pref" can be
-                ## added here, to add additional creator-defined preferences.
+                null height (4 * gui.pref_spacing)
 
-            null height (4 * gui.pref_spacing)
+                hbox:
+                    style_prefix "slider"
 
-            hbox:
-                style_prefix "slider"
-                box_wrap True
+                    vbox:
 
-                vbox:
+                        label _("Text Speed")
 
-                    label _("Text Speed")
+                        bar value Preference("text speed")
 
-                    bar value Preference("text speed")
+                        label _("Auto-Forward Time")
 
-                    label _("Auto-Forward Time")
+                        bar value Preference("auto-forward time")
 
-                    bar value Preference("auto-forward time")
+                    vbox:
 
-                vbox:
+                        if config.has_music:
+                            label _("Music Volume")
 
-                    if config.has_music:
-                        label _("Music Volume")
+                            hbox:
+                                bar value Preference("music volume")
 
-                        hbox:
-                            bar value Preference("music volume")
+                        if config.has_sound:
 
-                    if config.has_sound:
+                            label _("Sound Volume")
 
-                        label _("Sound Volume")
+                            hbox:
+                                bar value Preference("sound volume")
 
-                        hbox:
-                            bar value Preference("sound volume")
-
-                            if config.sample_sound:
-                                textbutton _("Test") action Play("sound", config.sample_sound)
+                                if config.sample_sound:
+                                    textbutton _("Test") action Play("sound", config.sample_sound)
 
 
-                    if config.has_voice:
-                        label _("Voice Volume")
+                        if config.has_voice:
+                            label _("Voice Volume")
 
-                        hbox:
-                            bar value Preference("voice volume")
+                            hbox:
+                                bar value Preference("voice volume")
 
-                            if config.sample_voice:
-                                textbutton _("Test") action Play("voice", config.sample_voice)
+                                if config.sample_voice:
+                                    textbutton _("Test") action Play("voice", config.sample_voice)
 
-                    if config.has_music or config.has_sound or config.has_voice:
-                        null height gui.pref_spacing
+                        if config.has_music or config.has_sound or config.has_voice:
+                            null height gui.pref_spacing
 
-                        textbutton _("Mute All"):
-                            action Preference("all mute", "toggle")
-                            style "mute_all_button"
+                            textbutton _("Mute All"):
+                                action Preference("all mute", "toggle")
+                                style "mute_all_button"
 
 
 style pref_label is gui_label
@@ -881,6 +899,8 @@ style pref_label:
 
 style pref_label_text:
     yalign 1.0
+    outlines [ (2, "#afe9ff", 1, 1), (1, "#fff", 0, 0) ]
+    font "gui/font/AIRSTREAM.ttf"
 
 style pref_vbox:
     xsize 338
@@ -1021,8 +1041,6 @@ screen help():
         style_prefix "help"
 
         vbox:
-            spacing 12
-
             hbox:
 
                 textbutton _("Keyboard") action SetScreenVariable("device", "keyboard")
@@ -1041,101 +1059,122 @@ screen help():
 
 screen keyboard_help():
 
-    hbox:
-        label _("Enter")
-        text _("Advances dialogue and activates the interface.")
+    frame:
+        background "#ffffffcf"
+        xpadding 24
+        ypadding 24
+        
+        vbox:
 
-    hbox:
-        label _("Space")
-        text _("Advances dialogue without selecting choices.")
+            hbox:
+                label _("Enter")
+                text _("Advances dialogue and activates the interface.")
 
-    hbox:
-        label _("Arrow Keys")
-        text _("Navigate the interface.")
+            hbox:
+                label _("Space")
+                text _("Advances dialogue without selecting choices.")
 
-    hbox:
-        label _("Escape")
-        text _("Accesses the game menu.")
+            hbox:
+                label _("Arrow Keys")
+                text _("Navigate the interface.")
 
-    hbox:
-        label _("Ctrl")
-        text _("Skips dialogue while held down.")
+            hbox:
+                label _("Escape")
+                text _("Accesses the game menu.")
 
-    hbox:
-        label _("Tab")
-        text _("Toggles dialogue skipping.")
+            hbox:
+                label _("Ctrl")
+                text _("Skips dialogue while held down.")
 
-    hbox:
-        label _("Page Up")
-        text _("Rolls back to earlier dialogue.")
+            hbox:
+                label _("Tab")
+                text _("Toggles dialogue skipping.")
 
-    hbox:
-        label _("Page Down")
-        text _("Rolls forward to later dialogue.")
+            hbox:
+                label _("Page Up")
+                text _("Rolls back to earlier dialogue.")
 
-    hbox:
-        label "H"
-        text _("Hides the user interface.")
+            hbox:
+                label _("Page Down")
+                text _("Rolls forward to later dialogue.")
 
-    hbox:
-        label "S"
-        text _("Takes a screenshot.")
+            hbox:
+                label "H"
+                text _("Hides the user interface.")
 
-    hbox:
-        label "V"
-        text _("Toggles assistive {a=https://www.renpy.org/l/voicing}self-voicing{/a}.")
+            hbox:
+                label "S"
+                text _("Takes a screenshot.")
+
+            hbox:
+                label "V"
+                text _("Toggles assistive {a=https://www.renpy.org/l/voicing}self-voicing{/a}.")
 
 
 screen mouse_help():
 
-    hbox:
-        label _("Left Click")
-        text _("Advances dialogue and activates the interface.")
+    frame:
+        background "#ffffffcf"
+        xpadding 24
+        ypadding 24
 
-    hbox:
-        label _("Middle Click")
-        text _("Hides the user interface.")
+        vbox:
 
-    hbox:
-        label _("Right Click")
-        text _("Accesses the game menu.")
+            hbox:
+                label _("Left Click")
+                text _("Advances dialogue and activates the interface.")
 
-    hbox:
-        label _("Mouse Wheel Up\nClick Rollback Side")
-        text _("Rolls back to earlier dialogue.")
+            hbox:
+                label _("Middle Click")
+                text _("Hides the user interface.")
 
-    hbox:
-        label _("Mouse Wheel Down")
-        text _("Rolls forward to later dialogue.")
+            hbox:
+                label _("Right Click")
+                text _("Accesses the game menu.")
+
+            hbox:
+                label _("Mouse Wheel Up")
+                text _("Rolls back to earlier dialogue.")
+
+            hbox:
+                label _("Mouse Wheel Down")
+                text _("Rolls forward to later dialogue.")
 
 
 screen gamepad_help():
 
-    hbox:
-        label _("Right Trigger\nA/Bottom Button")
-        text _("Advances dialogue and activates the interface.")
+    frame: 
+        background "#ffffffcf"
+        xpadding 24
+        ypadding 24
 
-    hbox:
-        label _("Left Trigger\nLeft Shoulder")
-        text _("Rolls back to earlier dialogue.")
+        vbox:
 
-    hbox:
-        label _("Right Shoulder")
-        text _("Rolls forward to later dialogue.")
+            hbox:
+                label _("Right Trigger\nA/Bottom Button")
+                text _("Advances dialogue and activates the interface.")
 
-    hbox:
-        label _("D-Pad, Sticks")
-        text _("Navigate the interface.")
+            hbox:
+                label _("Left Trigger\nLeft Shoulder")
+                text _("Rolls back to earlier dialogue.")
 
-    hbox:
-        label _("Start, Guide")
-        text _("Accesses the game menu.")
+            hbox:
+                label _("Right Shoulder")
+                text _("Rolls forward to later dialogue.")
 
-    hbox:
-        label _("Y/Top Button")
-        text _("Hides the user interface.")
+            hbox:
+                label _("D-Pad, Sticks")
+                text _("Navigate the interface.")
 
-    textbutton _("Calibrate") action GamepadCalibrate()
+            hbox:
+                label _("Start, Guide")
+                text _("Accesses the game menu.")
+
+            hbox:
+                label _("Y/Top Button")
+                text _("Hides the user interface.")
+
+            textbutton _("Calibrate") action GamepadCalibrate()
 
 
 style help_button is gui_button
@@ -1146,20 +1185,30 @@ style help_text is gui_text
 
 style help_button:
     properties gui.button_properties("help_button")
-    xmargin 12
+    xpadding 24
+    ysize 80
+    selected_background "#ffffffcf"
+    background "#ffffff6f"
 
 style help_button_text:
     properties gui.button_text_properties("help_button")
+    color "#ff71ce"
+    selected_color gui.selected_color
+    outlines [ (1, "#ffffff00", 2, 2), (1, "#fff", 0, 0) ]
+    hover_outlines [ (1, "#afe9ff", 2, 2), (1, "#ffcfea", 0, 0) ]
+    selected_outlines [ (1, "#ffffff00", 2, 2), (1, "#fff", 0, 0) ]
+    hover_color "#ff71ce"
+    font "gui/font/AIRSTREAM.ttf"
 
 style help_label:
-    xsize 375
-    right_padding 30
+    xsize 320
+    right_margin 20
 
 style help_label_text:
     size gui.text_size
     xalign 1.0
     text_align 0.0
-
+    color "#cc0066"
 
 
 ################################################################################

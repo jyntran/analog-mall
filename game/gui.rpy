@@ -33,11 +33,11 @@ define gui.idle_color = '#ff71ce'
 define gui.idle_small_color = '#ff71ce'
 
 ## The color that is used for buttons and bars that are hovered.
-define gui.hover_color = '#01cdfe'
+define gui.hover_color = '#afe9ff'
 
 ## The color used for a text button when it is selected but not focused. A
 ## button is selected if it is the current screen or preference value.
-define gui.selected_color = '#000000'
+define gui.selected_color = '#01cdfe'
 
 ## The color used for a text button when it cannot be selected.
 define gui.insensitive_color = '#aaaaaa7f'
@@ -58,10 +58,10 @@ define gui.interface_text_color = '#404040'
 define gui.default_font = "gui/font/Asap-Regular.ttf"
 
 ## The font used for character names.
-define gui.name_font = "gui/font/Asap-Regular.ttf"
+define gui.name_font = "gui/font/ShareTech-Regular.ttf"
 
 ## The font used for out-of-game text.
-define gui.interface_font = "gui/font/sad films.ttf"
+define gui.interface_font = "gui/font/ShareTech-Regular.ttf"
 
 ## The size of normal dialogue text.
 define gui.text_size = 33
