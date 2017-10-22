@@ -537,7 +537,7 @@ style return_button is navigation_button
 style return_button_text is navigation_button_text
 
 style game_menu_outer_frame:
-    bottom_padding 45
+    bottom_padding 180
     top_padding 120
     left_padding 320
 
@@ -673,7 +673,7 @@ screen file_slots(title):
             grid gui.file_slot_cols gui.file_slot_rows:
                 style_prefix "slot"
 
-                xalign 0.5
+                xalign 0.1
                 yalign 0.0
 
                 spacing gui.slot_spacing
@@ -706,9 +706,9 @@ screen file_slots(title):
                 background "#ffffffcf"
                 xpadding 0
                 ypadding 0
-                
-                xalign 0.5
-                yalign 0.8
+
+                xalign 0.4
+                yalign 0.9
 
                 ## Buttons to access other pages.
                 hbox:
@@ -959,28 +959,33 @@ screen history():
 
         style_prefix "history"
 
-        for h in _history_list:
+        frame:
+            background "#ffffffcf"
 
-            window:
+            vbox:
 
-                ## This lays things out properly if history_height is None.
-                has fixed:
-                    yfit True
+                for h in _history_list:
 
-                if h.who:
+                    window:
 
-                    label h.who:
-                        style "history_name"
+                        ## This lays things out properly if history_height is None.
+                        has fixed:
+                            yfit True
 
-                        ## Take the color of the who text from the Character, if
-                        ## set.
-                        if "color" in h.who_args:
-                            text_color h.who_args["color"]
+                        if h.who:
 
-                text h.what
+                            label h.who:
+                                style "history_name"
 
-        if not _history_list:
-            label _("The dialogue history is empty.")
+                                ## Take the color of the who text from the Character, if
+                                ## set.
+                                if "color" in h.who_args:
+                                    text_color h.who_args["color"]
+
+                        text h.what
+
+                if not _history_list:
+                    label _("The dialogue history is empty.")
 
 
 style history_window is empty
@@ -1061,8 +1066,8 @@ screen keyboard_help():
 
     frame:
         background "#ffffffcf"
-        xpadding 24
-        ypadding 24
+        xpadding 180
+        ypadding 48
         
         vbox:
 
@@ -1115,8 +1120,8 @@ screen mouse_help():
 
     frame:
         background "#ffffffcf"
-        xpadding 24
-        ypadding 24
+        xpadding 180
+        ypadding 48
 
         vbox:
 
@@ -1145,8 +1150,8 @@ screen gamepad_help():
 
     frame: 
         background "#ffffffcf"
-        xpadding 24
-        ypadding 24
+        xpadding 180
+        ypadding 48
 
         vbox:
 
