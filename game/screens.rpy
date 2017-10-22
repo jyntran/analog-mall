@@ -716,17 +716,18 @@ screen file_slots(title):
 
                     spacing gui.page_spacing
 
-                    textbutton _("<") action FilePagePrevious()
+                    textbutton _("←") action FilePagePrevious() text_font "DejaVuSans.ttf"
 
-                    textbutton _("{#auto_page}A") action FilePage("auto")
+                    textbutton _("{#auto_page}Auto") action FilePage("auto")
 
-                    textbutton _("{#quick_page}Q") action FilePage("quick")
+                    textbutton _("{#quick_page}Quick") action FilePage("quick")
 
                     ## range(1, 10) gives the numbers from 1 to 9.
                     for page in range(1, 10):
                         textbutton "[page]" action FilePage(page)
 
-                    textbutton _(">") action FilePageNext(max=9)
+                    textbutton _("→") action FilePageNext(max=9) text_font "DejaVuSans.ttf"
+
 
 
 style page_label is gui_label
@@ -1333,6 +1334,7 @@ style skip_frame:
 
 style skip_text:
     size gui.notify_text_size
+    color gui.selected_color
 
 style skip_triangle:
     # We have to use a font that has the BLACK RIGHT-POINTING SMALL TRIANGLE
@@ -1371,12 +1373,14 @@ style notify_text is gui_text
 
 style notify_frame:
     ypos gui.notify_ypos
+    xalign 1.0
 
     background Frame("gui/notify.png", gui.notify_frame_borders, tile=gui.frame_tile)
     padding gui.notify_frame_borders.padding
 
 style notify_text:
     size gui.notify_text_size
+    color gui.selected_color
 
 
 ## NVL screen ##################################################################
