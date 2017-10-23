@@ -138,6 +138,7 @@ style window:
     ysize gui.textbox_height
 
     background Image("gui/textbox.png", xalign=0.5, yalign=1.0)
+    #background "#ffffffef"
 
 style namebox:
     xpos gui.name_xpos
@@ -146,8 +147,8 @@ style namebox:
     ypos gui.name_ypos
     ysize gui.namebox_height
 
-    background Frame("gui/namebox.png", gui.namebox_borders, tile=gui.namebox_tile, xalign=gui.name_xalign)
-    padding gui.namebox_borders.padding
+    #background Frame("gui/namebox.png", gui.namebox_borders, tile=gui.namebox_tile, xalign=gui.name_xalign)
+    #padding gui.namebox_borders.padding
 
 style say_label:
     color gui.accent_color
@@ -253,20 +254,23 @@ screen quick_menu():
 
     if quick_menu:
 
-        hbox:
-            style_prefix "quick"
-
-            xalign 0.5
+        frame:
+            background None
+            xalign 1.0
             yalign 1.0
+            bottom_padding 0.01
 
-            textbutton _("Back") action Rollback()
-            textbutton _("History") action ShowMenu('history')
-            textbutton _("Skip") action Skip() alternate Skip(fast=True, confirm=True)
-            textbutton _("Auto") action Preference("auto-forward", "toggle")
-            textbutton _("Save") action ShowMenu('save')
-            textbutton _("Q.Save") action QuickSave()
-            textbutton _("Q.Load") action QuickLoad()
-            textbutton _("Prefs") action ShowMenu('preferences')
+            hbox:
+                style_prefix "quick"
+
+                textbutton _("Q.Save") action QuickSave()
+                textbutton _("Q.Load") action QuickLoad()
+                textbutton _("Save") action ShowMenu('save')
+                textbutton _("Log") action ShowMenu('history')
+                textbutton _("Skip") action Skip() alternate Skip(fast=True, confirm=True)
+                textbutton _("Auto") action Preference("auto-forward", "toggle")
+                textbutton _("Config") action ShowMenu('preferences')
+                textbutton _("Close") action HideInterface()
 
 
 ## This code ensures that the quick_menu screen is displayed in-game, whenever
@@ -284,7 +288,8 @@ style quick_button:
 
 style quick_button_text:
     properties gui.button_text_properties("quick_button")
-
+    hover_color gui.hover_color
+    outlines [ (1, "#ffffffcf", 0, 0) ]
 
 ################################################################################
 ## Main and Game Menu Screens
@@ -301,7 +306,7 @@ screen navigation():
         style_prefix "navigation"
 
         xpos gui.navigation_xpos
-        yalign 0.95
+        yalign 0.97
 
         if main_menu:
 
@@ -309,7 +314,7 @@ screen navigation():
 
         else:
 
-            textbutton _("History") action ShowMenu("history")
+            textbutton _("Log") action ShowMenu("history")
 
             text _(" / "):
                 style "navigation_separator"
@@ -324,7 +329,7 @@ screen navigation():
         text _(" / "):
             style "navigation_separator"
 
-        textbutton _("Options") action ShowMenu("preferences")
+        textbutton _("Config") action ShowMenu("preferences")
 
         if _in_replay:
 
@@ -779,7 +784,7 @@ screen preferences():
     else:
         $ cols = 4
 
-    use game_menu(_("Options"), scroll="viewport"):
+    use game_menu(_("Config"), scroll="viewport"):
 
         frame:
             background "#ffffffcf"
@@ -956,7 +961,7 @@ screen history():
     ## Avoid predicting this screen, as it can be very large.
     predict False
 
-    use game_menu(_("History"), scroll=("vpgrid" if gui.history_height else "viewport")):
+    use game_menu(_("Log"), scroll=("vpgrid" if gui.history_height else "viewport")):
 
         style_prefix "history"
 
@@ -1214,7 +1219,7 @@ style help_label_text:
     size gui.text_size
     xalign 1.0
     text_align 0.0
-    color "#cc0066"
+    color gui.accent_color
 
 
 ################################################################################
@@ -1517,16 +1522,19 @@ screen quick_menu():
 
     zorder 100
 
-    hbox:
-        style_prefix "quick"
-
-        xalign 0.5
+    frame:
+        background None
+        xalign 1.0
         yalign 1.0
+        bottom_padding 0.01
 
-        textbutton _("Back") action Rollback()
-        textbutton _("Skip") action Skip() alternate Skip(fast=True, confirm=True)
-        textbutton _("Auto") action Preference("auto-forward", "toggle")
-        textbutton _("Menu") action ShowMenu()
+        hbox:
+            style_prefix "quick"
+
+            textbutton _("Log") action ShowMenu('history')
+            textbutton _("Skip") action Skip() alternate Skip(fast=True, confirm=True)
+            textbutton _("Auto") action Preference("auto-forward", "toggle")
+            textbutton _("Menu") action ShowMenu()
 
 
 style window:
