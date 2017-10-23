@@ -692,15 +692,18 @@ screen file_slots(title):
 
                         has vbox
 
-                        add FileScreenshot(slot) xalign 0.5
-
                         frame:
                             background "#ffffff"
+                            xfill True
+                            ysize 32
                             text FileTime(slot, format=_("{#file_time}%b %d %Y %H:%M"), empty=_("404")):
                                 style "slot_time_text"
-                            ypos -37
-                            xalign 1.0
-                            left_padding 9
+                            textbutton _("☒") action FileDelete(slot):
+                                style "slot_delete_button"
+                            yalign 0.0
+                            xalign 0.0
+
+                        add FileScreenshot(slot) xalign 0.5 yalign 0.0
 
                         text FileSaveName(slot):
                             style "slot_name_text"
@@ -744,6 +747,8 @@ style slot_button is gui_button
 style slot_button_text is gui_button_text
 style slot_time_text is slot_button_text
 style slot_name_text is slot_button_text
+style slot_delete_button is gui_button
+style slot_delete_button_text is gui_button_text
 
 style page_label:
     xpadding 75
@@ -767,6 +772,19 @@ style slot_button_text:
     properties gui.button_text_properties("slot_button")
     idle_color "#ffffff"
     hover_color gui.selected_color
+
+style slot_delete_button:
+    background None
+    right_margin -7
+    xalign 1.0
+    ypos -18
+
+style slot_delete_button_text:
+    properties gui.button_text_properties("slot_button")
+    font "DejaVuSans.ttf"
+    idle_color gui.idle_color
+    hover_color gui.selected_color
+    size 24
 
 ## Preferences screen ##########################################################
 ##
