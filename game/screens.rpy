@@ -151,7 +151,7 @@ style namebox:
     #padding gui.namebox_borders.padding
 
 style say_label:
-    color gui.accent_color
+    color "#cc0085"
     font gui.name_font
     size gui.name_text_size
     xalign gui.name_xalign
@@ -255,10 +255,10 @@ screen quick_menu():
     if quick_menu:
 
         frame:
-            background None
+            background "gui/overlay/quick_menu.png"
             xalign 1.0
             yalign 1.0
-            bottom_padding 0.01
+            left_padding 260
 
             hbox:
                 style_prefix "quick"
@@ -266,6 +266,7 @@ screen quick_menu():
                 textbutton _("Q.Save") action QuickSave()
                 textbutton _("Q.Load") action QuickLoad()
                 textbutton _("Save") action ShowMenu('save')
+                textbutton _("Load") action ShowMenu('load')
                 textbutton _("Log") action ShowMenu('history')
                 textbutton _("Skip") action Skip() alternate Skip(fast=True, confirm=True)
                 textbutton _("Auto") action Preference("auto-forward", "toggle")
@@ -289,7 +290,6 @@ style quick_button:
 style quick_button_text:
     properties gui.button_text_properties("quick_button")
     hover_color gui.hover_color
-    outlines [ (1, "#ffffffcf", 0, 0) ]
 
 ################################################################################
 ## Main and Game Menu Screens
@@ -777,7 +777,7 @@ style slot_delete_button:
     background None
     right_margin -7
     xalign 1.0
-    ypos -18
+    ypos -16
 
 style slot_delete_button_text:
     properties gui.button_text_properties("slot_button")
@@ -1089,9 +1089,6 @@ screen help():
 screen keyboard_help():
 
     frame:
-        background "#ffffffcf"
-        xpadding 180
-        ypadding 48
         
         vbox:
 
@@ -1143,9 +1140,6 @@ screen keyboard_help():
 screen mouse_help():
 
     frame:
-        background "#ffffffcf"
-        xpadding 180
-        ypadding 48
 
         vbox:
 
@@ -1173,9 +1167,6 @@ screen mouse_help():
 screen gamepad_help():
 
     frame: 
-        background "#ffffffcf"
-        xpadding 180
-        ypadding 48
 
         vbox:
 
@@ -1239,6 +1230,11 @@ style help_label_text:
     text_align 0.0
     color gui.accent_color
 
+style help_frame:
+    background "#ffffffcf"
+    xfill True
+    xpadding 120
+    ypadding 48
 
 ################################################################################
 ## Additional screens
@@ -1397,14 +1393,14 @@ style notify_text is gui_text
 style notify_frame:
     ypos gui.notify_ypos
     xalign 1.0
+    text_align 1.0
 
     background Frame("gui/notify.png", gui.notify_frame_borders, tile=gui.frame_tile)
     padding gui.notify_frame_borders.padding
-
+    
 style notify_text:
     size gui.notify_text_size
     color gui.selected_color
-
 
 ## NVL screen ##################################################################
 ##

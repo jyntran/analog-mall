@@ -64,10 +64,10 @@ define gui.name_font = "gui/font/Karla-Regular.ttf"
 define gui.interface_font = "gui/font/Karla-Regular.ttf"
 
 ## The size of normal dialogue text.
-define gui.text_size = 32
+define gui.text_size = 28
 
 ## The size of character names.
-define gui.name_text_size = 32
+define gui.name_text_size = 28
 
 ## The size of text in the game's user interface.
 define gui.interface_text_size = 36
@@ -106,12 +106,12 @@ define gui.textbox_yalign = 1.0
 
 ## The placement of the speaking character's name, relative to the textbox.
 ## These can be a whole number of pixels from the left or top, or 0.5 to center.
-define gui.name_xpos = 300
-define gui.name_ypos = 120
+define gui.name_xpos = 370
+define gui.name_ypos = 70
 
 ## The horizontal alignment of the character's name. This can be 0.0 for left-
 ## aligned, 0.5 for centered, and 1.0 for right-aligned.
-define gui.name_xalign = 1.0
+define gui.name_xalign = 0.0
 
 ## The width, height, and borders of the box containing the character's name, or
 ## None to automatically size it.
@@ -131,7 +131,7 @@ define gui.namebox_tile = False
 ## number of pixels relative to the left or top side of the textbox, or 0.5 to
 ## center.
 define gui.text_xpos = 370
-define gui.text_ypos = 120
+define gui.text_ypos = 110
 
 ## The maximum width of dialogue text, in pixels.
 define gui.text_width = 1116
@@ -189,9 +189,9 @@ define gui.confirm_button_text_xalign = 0.5
 define gui.page_button_borders = Borders(15, 6, 15, 6)
 
 define gui.quick_button_borders = Borders(15, 6, 15, 0)
-define gui.quick_button_text_size = 20
-define gui.quick_button_text_idle_color = gui.selected_color
-define gui.quick_button_text_selected_color = gui.idle_color
+define gui.quick_button_text_size = 18
+define gui.quick_button_text_idle_color = "#cc0085"
+define gui.quick_button_text_selected_color = gui.selected_color
 
 ## You can also add your own customizations, by adding properly-named variables.
 ## For example, you can uncomment the following line to set the width of a
@@ -284,10 +284,10 @@ define gui.frame_borders = Borders(6, 6, 6, 6)
 define gui.confirm_frame_borders = Borders(60, 60, 60, 60)
 
 ## The frame that is used as part of the skip screen.
-define gui.skip_frame_borders = Borders(24, 8, 75, 8)
+define gui.skip_frame_borders = Borders(18, 8, 75, 8)
 
 ## The frame that is used as part of the notify screen.
-define gui.notify_frame_borders = Borders(24, 8, 60, 8)
+define gui.notify_frame_borders = Borders(75, 8, 18, 8)
 
 ## Should frame backgrounds be tiled?
 define gui.frame_tile = False
