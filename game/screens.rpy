@@ -1527,7 +1527,7 @@ style nvl_button_text:
 
 style pref_vbox:
     variant "medium"
-    xsize 675
+    xsize 600
 
 ## Since a mouse may not be present, we replace the quick menu with a version
 ## that uses fewer and bigger buttons that are easier to touch.
@@ -1537,10 +1537,11 @@ screen quick_menu():
     zorder 100
 
     frame:
-        background None
+        background "gui/overlay/quick_menu.png"
         xalign 1.0
         yalign 1.0
-        bottom_padding 0.01
+        left_padding 260
+        #bottom_padding 0.01
 
         hbox:
             style_prefix "quick"
@@ -1561,11 +1562,11 @@ style nvl_window:
 
 style main_menu_frame:
     variant "small"
-    background "gui/phone/overlay/main_menu.png"
+    #background "gui/phone/overlay/main_menu.png"
 
 style game_menu_outer_frame:
     variant "small"
-    background "gui/phone/overlay/game_menu.png"
+    #background "gui/phone/overlay/game_menu.png"
 
 style game_menu_navigation_frame:
     variant "small"
