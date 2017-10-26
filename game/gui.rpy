@@ -23,21 +23,21 @@ init python:
 ## The colors of text in the interface.
 
 ## An accent color used throughout the interface to label and highlight text.
-define gui.accent_color = '#ff71ce'
+define gui.accent_color = '#000000'
 
 ## The color used for a text button when it is neither selected nor hovered.
-define gui.idle_color = '#ff71ce'
+define gui.idle_color = '#000000'
 
 ## The small color is used for small text, which needs to be brighter/darker to
 ## achieve the same effect.
-define gui.idle_small_color = '#ff71ce'
+define gui.idle_small_color = '#000000'
 
 ## The color that is used for buttons and bars that are hovered.
-define gui.hover_color = '#afe9ff'
+define gui.hover_color = '#000000'
 
 ## The color used for a text button when it is selected but not focused. A
 ## button is selected if it is the current screen or preference value.
-define gui.selected_color = '#01cdfe'
+define gui.selected_color = '#000000'
 
 ## The color used for a text button when it cannot be selected.
 define gui.insensitive_color = '#aaaaaa7f'
@@ -55,13 +55,13 @@ define gui.interface_text_color = '#404040'
 ## Fonts and Font Sizes ########################################################
 
 ## The font used for in-game text.
-define gui.default_font = "gui/font/Karla-Regular.ttf"
+define gui.default_font = "gui/font/WorkSans-Regular.ttf"
 
 ## The font used for character names.
-define gui.name_font = "gui/font/Karla-Regular.ttf"
+define gui.name_font = "gui/font/WorkSans-Regular.ttf"
 
 ## The font used for out-of-game text.
-define gui.interface_font = "gui/font/Karla-Regular.ttf"
+define gui.interface_font = "gui/font/ChicagoFLF.ttf"
 
 ## The size of normal dialogue text.
 define gui.text_size = 28
@@ -79,7 +79,7 @@ define gui.label_text_size = 42
 define gui.notify_text_size = 24
 
 ## The size of the game's title.
-define gui.title_text_size = 75
+define gui.title_text_size = 18
 
 ## Main and Game Menus #########################################################
 
@@ -189,8 +189,8 @@ define gui.confirm_button_text_xalign = 0.5
 define gui.page_button_borders = Borders(15, 6, 15, 6)
 
 define gui.quick_button_borders = Borders(15, 6, 15, 0)
-define gui.quick_button_text_size = 18
-define gui.quick_button_text_idle_color = "#cc0085"
+define gui.quick_button_text_size = 16
+define gui.quick_button_text_idle_color = "#666"
 define gui.quick_button_text_selected_color = gui.selected_color
 
 ## You can also add your own customizations, by adding properly-named variables.
@@ -222,16 +222,16 @@ define gui.choice_button_text_hover_color = "#ffffff"
 ## image files in gui/button, like the other kinds of buttons.
 
 ## The save slot button.
-define gui.slot_button_width = 414
-define gui.slot_button_height = 309
-define gui.slot_button_borders = Borders(15, 15, 15, 15)
+define gui.slot_button_width = 420
+define gui.slot_button_height = 236
+define gui.slot_button_borders = None
 define gui.slot_button_text_size = 21
 define gui.slot_button_text_xalign = 0.5
-define gui.slot_button_text_idle_color = gui.idle_small_color
+#define gui.slot_button_text_idle_color = gui.idle_small_color
 
 ## The width and height of thumbnails used by the save slots.
-define config.thumbnail_width = 384
-define config.thumbnail_height = 216
+define config.thumbnail_width = 414
+define config.thumbnail_height = 230
 
 ## The number of columns and rows in the grid of save slots.
 define gui.file_slot_cols = 3
@@ -269,7 +269,7 @@ define gui.pref_button_spacing = 0
 define gui.page_spacing = 0
 
 ## The spacing between file slots.
-define gui.slot_spacing = 15
+define gui.slot_spacing = 36
 
 
 ## Frames ######################################################################
@@ -303,7 +303,7 @@ define gui.frame_tile = False
 ## The height of horizontal bars, scrollbars, and sliders. The width of vertical
 ## bars, scrollbars, and sliders.
 define gui.bar_size = 54
-define gui.scrollbar_size = 18
+define gui.scrollbar_size = 40
 define gui.slider_size = 45
 
 ## True if bar images should be tiled. False if they should be linearly scaled.
@@ -318,7 +318,7 @@ define gui.slider_borders = Borders(6, 6, 6, 6)
 
 ## Vertical borders.
 define gui.vbar_borders = Borders(6, 6, 6, 6)
-define gui.vscrollbar_borders = Borders(6, 6, 6, 6)
+define gui.vscrollbar_borders = Borders(6, 32, 6, 32)
 define gui.vslider_borders = Borders(6, 6, 6, 6)
 
 ## What to do with unscrollable scrollbars in the gui. "hide" hides them, while
@@ -335,19 +335,19 @@ define config.history_length = 250
 
 ## The height of a history screen entry, or None to make the height variable at
 ## the cost of performance.
-define gui.history_height = 210
+define gui.history_height = 240
 
 ## The position, width, and alignment of the label giving the name of the
 ## speaking character.
-define gui.history_name_xpos = 150
+define gui.history_name_xpos = 240
 define gui.history_name_ypos = 0
-define gui.history_name_width = 225
+define gui.history_name_width = 240
 define gui.history_name_xalign = 1.0
 
 ## The position, width, and alignment of the dialogue text.
-define gui.history_text_xpos = 255
-define gui.history_text_ypos = 8
-define gui.history_text_width = 1110
+define gui.history_text_xpos = 320
+define gui.history_text_ypos = 0
+define gui.history_text_width = 900
 define gui.history_text_xalign = 0.0
 
 

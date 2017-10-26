@@ -134,6 +134,8 @@ default preferences.afm_time = 15
 ## literal string, not an expression.
 
 define config.save_directory = "analog-mall-1507740267"
+define config.has_quicksave = False
+define config.has_autosave = False
 
 
 ## Icon ########################################################################
