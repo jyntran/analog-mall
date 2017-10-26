@@ -55,10 +55,10 @@ define gui.interface_text_color = '#404040'
 ## Fonts and Font Sizes ########################################################
 
 ## The font used for in-game text.
-define gui.default_font = "gui/font/WorkSans-Regular.ttf"
+define gui.default_font = "gui/font/Inconsolata-Regular.ttf"
 
 ## The font used for character names.
-define gui.name_font = "gui/font/WorkSans-Regular.ttf"
+define gui.name_font = "gui/font/Inconsolata-Regular.ttf"
 
 ## The font used for out-of-game text.
 define gui.interface_font = "gui/font/ChicagoFLF.ttf"
@@ -97,7 +97,7 @@ define gui.show_name = False
 ## time.
 
 ## The height of the textbox containing dialogue.
-define gui.textbox_height = 278
+define gui.textbox_height = 240
 
 ## The placement of the textbox vertically on the screen. 0.0 is the top, 0.5 is
 ## center, and 1.0 is the bottom.
@@ -106,8 +106,8 @@ define gui.textbox_yalign = 1.0
 
 ## The placement of the speaking character's name, relative to the textbox.
 ## These can be a whole number of pixels from the left or top, or 0.5 to center.
-define gui.name_xpos = 370
-define gui.name_ypos = 70
+define gui.name_xpos = 50
+define gui.name_ypos = 20
 
 ## The horizontal alignment of the character's name. This can be 0.0 for left-
 ## aligned, 0.5 for centered, and 1.0 for right-aligned.
@@ -130,11 +130,11 @@ define gui.namebox_tile = False
 ## The placement of dialogue relative to the textbox. These can be a whole
 ## number of pixels relative to the left or top side of the textbox, or 0.5 to
 ## center.
-define gui.text_xpos = 370
-define gui.text_ypos = 110
+define gui.text_xpos = 70
+define gui.text_ypos = 60
 
 ## The maximum width of dialogue text, in pixels.
-define gui.text_width = 1116
+define gui.text_width = 1240
 
 ## The horizontal alignment of the dialogue text. This can be 0.0 for left-
 ## aligned, 0.5 for centered, and 1.0 for right-aligned.
@@ -190,7 +190,7 @@ define gui.page_button_borders = Borders(15, 6, 15, 6)
 
 define gui.quick_button_borders = Borders(15, 6, 15, 0)
 define gui.quick_button_text_size = 16
-define gui.quick_button_text_idle_color = "#666"
+define gui.quick_button_text_idle_color = "#999"
 define gui.quick_button_text_selected_color = gui.selected_color
 
 ## You can also add your own customizations, by adding properly-named variables.

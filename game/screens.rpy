@@ -140,11 +140,11 @@ style namebox_label is say_label
 
 style window:
     xalign 0.5
-    xfill True
+    xsize 1366
+    ymargin 16
     yalign gui.textbox_yalign
     ysize gui.textbox_height
-
-    background Image("gui/textbox.png", xalign=0.5, yalign=1.0)
+    background "#ffffffef"
 
 style namebox:
     xpos gui.name_xpos
@@ -154,17 +154,20 @@ style namebox:
     ysize gui.namebox_height
 
 style say_label:
-    color "#cc0085"
     font gui.name_font
     size gui.name_text_size
     xalign gui.name_xalign
     yalign 0.5
+    color "#ff71ce"
+    outlines [ (0, "#0000003f", 1, 1) ]
 
 style say_dialogue:
     xpos gui.text_xpos
     xanchor gui.text_xalign
     xsize gui.text_width
     ypos gui.text_ypos
+    color "#333"
+    outlines [ (0, "#0000003f", 1, 1) ]
 
     text_align gui.text_xalign
     layout ("subtitle" if gui.text_xalign else "tex")
@@ -259,11 +262,13 @@ screen quick_menu():
 
         frame:
             background None
-            xalign 1.0
-            yalign 1.0
+            xsize 1366
+            xalign 0.5
+            yalign 0.99
 
             hbox:
                 style_prefix "quick"
+                xalign 1.0
 
                 textbutton _("Save") action ShowMenu('save')
                 textbutton _("Load") action ShowMenu('load')
@@ -459,6 +464,11 @@ screen game_menu(title, scroll=None):
 
         label title
 
+        textbutton _("X"):
+            style "return_square_button"
+
+            action Return()
+
         vbox:
 
             frame:
@@ -565,6 +575,22 @@ style return_button:
     xalign 0.99
     yalign 0.0
 
+style return_square_button:
+    background "#fff"
+    xsize 18
+    ysize 18
+    xpadding 4
+    ypadding 4
+    xpos 21
+    ypos 6
+
+style return_square_button_text:
+    font "DejaVuSans.ttf"
+    idle_color "#ccc"
+    hover_color "#000"
+    size 16
+    xalign 0.5
+    yalign 0.5
 
 ## About screen ################################################################
 ##
@@ -1168,8 +1194,7 @@ style help_text is gui_text
 style help_button:
     properties gui.button_properties("help_button")
     xmargin 20
-    xpadding 16
-    xsize 300
+    xpadding 48
 
 style help_button_text:
     properties gui.button_text_properties("help_button")
@@ -1483,8 +1508,8 @@ style nvl_button_text:
 label splashscreen:
     scene black
     pause 1
-    scene white with dissolve
-    pause 3
+    scene splash with dissolve
+    pause 2
     scene black with dissolve
     pause 1
     return
