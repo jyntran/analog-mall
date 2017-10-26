@@ -64,6 +64,8 @@ style scrollbar:
     thumb Frame("gui/scrollbar/horizontal_[prefix_]thumb.png", gui.scrollbar_borders, tile=gui.scrollbar_tile)
     left_gutter 33
     right_gutter 33
+    left_bar "gui/scrollbar/top_bar.png"
+    right_bar "gui/scrollbar/bottom_bar.png"
 
 style vscrollbar:
     xsize gui.scrollbar_size
@@ -537,7 +539,6 @@ style game_menu_outer_frame:
     background "gui/game_menu__.png"
     xsize 1440
     ysize 800
-
     xpos 120
     ypos 120
 
@@ -546,16 +547,18 @@ style game_menu_navigation_frame:
     xfill True
     
 style game_menu_content_frame:
-    left_margin 30
     top_margin 67
-    bottom_margin 37
+    bottom_margin 36
     right_margin 2
+    left_padding 24
 
 style game_menu_viewport:
-    xsize 1380
+    xsize 1400
+    yfill True 
+    bottom_padding 100
 
 style game_menu_vscrollbar:
-    unscrollable gui.unscrollable
+     unscrollable gui.unscrollable
 
 style game_menu_side:
     spacing 15
@@ -664,40 +667,39 @@ screen file_slots(title):
 
     default page_name_value = FilePageNameInputValue(pattern=_("Page {}"), quick=_("Quick saves"))
 
-    use game_menu(title):
+    use game_menu(title, scroll="viewport"):
 
-        fixed:
-            ## This ensures the input will get the enter event before any of the
-            ## buttons do.
-            order_reverse True
+        ## The page name, which can be edited by clicking on a button.
+        button:
+            style "page_label"
+        
+            key_events True
+            xalign 0.0
+            action page_name_value.Toggle()
+        
+            input:
+                style "page_label_text"
+                value page_name_value
+        frame:
+            background None
 
-            ## The page name, which can be edited by clicking on a button.
-            button:
-                style "page_label"
-            
-                key_events True
-                xalign 0.0
-                action page_name_value.Toggle()
-            
-                input:
-                    style "page_label_text"
-                    value page_name_value
-            frame:
-                background None
-                top_margin 30
+            ## The grid of file slots.
+            grid gui.file_slot_cols gui.file_slot_rows:
+                style_prefix "slot"
 
-                ## The grid of file slots.
-                grid gui.file_slot_cols gui.file_slot_rows:
-                    style_prefix "slot"
+                xalign 0.1
+                yalign 0.0
 
-                    xalign 0.1
-                    yalign 0.0
+                spacing gui.slot_spacing
 
-                    spacing gui.slot_spacing
+                for i in range(gui.file_slot_cols * gui.file_slot_rows):
 
-                    for i in range(gui.file_slot_cols * gui.file_slot_rows):
+                    $ slot = i + 1
 
-                        $ slot = i + 1
+                    frame:
+                        background None
+                        bottom_padding 50
+                        bottom_margin 50
 
                         button:
                             action FileAction(slot)
@@ -714,19 +716,7 @@ screen file_slots(title):
                                 style "slot_name_text"
 
                             text FileTime(slot, format=_("{#file_time}%b %d %Y %H:%M"), empty=_("404")):
-                                style "slot_time_text"                        
-
-            frame:
-                background None
-                xpadding 0
-                ypadding 0
-                xsize 1400
-                ysize 32
-                xpos -30
-                ypos 694
-
-                imagebutton auto "gui/button/arrow_left_%s.png" action FilePagePrevious() xalign 0.0
-                imagebutton auto "gui/button/arrow_right_%s.png" action FilePageNext(max=9) xalign 1.0
+                                    style "slot_time_text"                        
 
 
 style page_label is gui_label
@@ -766,7 +756,7 @@ style slot_button_text:
     properties gui.button_text_properties("slot_button")
     color "#000000"
     size 18 
-    ypos -8
+    ysize 32
 
 ## Preferences screen ##########################################################
 ##
@@ -789,7 +779,7 @@ screen preferences():
         frame:
             background None
             top_margin 30
-
+            left_margin 30
             vbox:
                 xfill True
 
@@ -1060,6 +1050,7 @@ screen help():
         frame:
             background None
             top_margin 30
+            left_margin 30
 
             vbox:
 
