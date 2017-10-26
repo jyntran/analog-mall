@@ -19,8 +19,9 @@ style input:
     color gui.accent_color
 
 style hyperlink_text:
-    color gui.selected_color
-    hover_underline True
+    color "#666"
+    hover_color "#999"
+    underline True
     font gui.interface_font
     size gui.text_size
 
@@ -318,7 +319,7 @@ screen navigation():
         hbox:
             style_prefix "navigation"
 
-            add "gui/icon.png" 
+            imagebutton idle "gui/icon.png" action ShowMenu("about")
 
             if main_menu:
 
@@ -633,6 +634,8 @@ style about_text is gui_text
 style about_label_text:
     size gui.label_text_size
 
+style about_text:
+    size gui.text_size
 
 ## Load and Save screens #######################################################
 ##
@@ -1328,7 +1331,8 @@ style skip_triangle is skip_text
 
 style skip_frame:
     ypos gui.skip_ypos
-    background Frame("gui/skip.png", gui.skip_frame_borders, tile=gui.frame_tile)
+    background "#ffffffef"
+    #background Frame("gui/skip.png", gui.skip_frame_borders, tile=gui.frame_tile)
     padding gui.skip_frame_borders.padding
 
 style skip_text:
@@ -1375,7 +1379,8 @@ style notify_frame:
     xalign 1.0
     text_align 1.0
 
-    background Frame("gui/notify.png", gui.notify_frame_borders, tile=gui.frame_tile)
+    background "#ffffffef"
+    #background Frame("gui/notify.png", gui.notify_frame_borders, tile=gui.frame_tile)
     padding gui.notify_frame_borders.padding
     
 style notify_text:
