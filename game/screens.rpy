@@ -467,7 +467,7 @@ screen game_menu(title, scroll=None):
 
         label title
 
-        textbutton _("X"):
+        textbutton _("x"):
             style "return_square_button"
 
             action Return()
@@ -565,8 +565,9 @@ style game_menu_side:
 
 style game_menu_label:
     xalign 0.5
-    ypos 5
+    ypos 4
     xpadding 12
+    ypadding 2
     text_align 0.5
     background "#ffffff"
 
@@ -580,19 +581,17 @@ style return_button:
     yalign 0.0
 
 style return_square_button:
-    background "#fff"
+    background None
     xsize 18
     ysize 18
-    xpadding 4
-    ypadding 4
-    xpos 21
-    ypos 6
+    xpos 20
+    ypos 4
 
 style return_square_button_text:
-    font "DejaVuSans.ttf"
+    font "gui/font/RobotoMono-Regular.ttf"
     idle_color "#ccc"
     hover_color "#000"
-    size 16
+    size 29
     xalign 0.5
     yalign 0.5
 
@@ -698,8 +697,7 @@ screen file_slots(title):
 
                     frame:
                         background None
-                        bottom_padding 50
-                        bottom_margin 50
+                        bottom_padding 60
 
                         button:
                             action FileAction(slot)
