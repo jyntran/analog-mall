@@ -19,9 +19,11 @@ style input:
     color gui.accent_color
 
 style hyperlink_text:
-    color gui.selected_color
-    hover_underline True
+    color "#666"
+    hover_color "#999"
+    underline True
     font gui.interface_font
+    size gui.text_size
 
 style gui_text:
     font gui.interface_font
@@ -35,7 +37,6 @@ style button:
 style button_text is gui_text:
     properties gui.button_text_properties("button")
     yalign 0.5
-
 
 style label_text is gui_text:
     color gui.accent_color
@@ -60,11 +61,19 @@ style scrollbar:
     ysize gui.scrollbar_size
     base_bar Frame("gui/scrollbar/horizontal_[prefix_]bar.png", gui.scrollbar_borders, tile=gui.scrollbar_tile)
     thumb Frame("gui/scrollbar/horizontal_[prefix_]thumb.png", gui.scrollbar_borders, tile=gui.scrollbar_tile)
+    left_gutter 33
+    right_gutter 33
+    left_bar "gui/scrollbar/top_bar.png"
+    right_bar "gui/scrollbar/bottom_bar.png"
 
 style vscrollbar:
     xsize gui.scrollbar_size
     base_bar Frame("gui/scrollbar/vertical_[prefix_]bar.png", gui.vscrollbar_borders, tile=gui.scrollbar_tile)
     thumb Frame("gui/scrollbar/vertical_[prefix_]thumb.png", gui.vscrollbar_borders, tile=gui.scrollbar_tile)
+    top_gutter 33
+    bottom_gutter 33
+    top_bar "gui/scrollbar/top_bar.png"
+    bottom_bar "gui/scrollbar/bottom_bar.png"
 
 style slider:
     ysize gui.slider_size
@@ -133,12 +142,11 @@ style namebox_label is say_label
 
 style window:
     xalign 0.5
-    xfill True
+    xsize 1366
+    ymargin 16
     yalign gui.textbox_yalign
     ysize gui.textbox_height
-
-    background Image("gui/textbox.png", xalign=0.5, yalign=1.0)
-    #background "#ffffffef"
+    background "#ffffffef"
 
 style namebox:
     xpos gui.name_xpos
@@ -147,21 +155,21 @@ style namebox:
     ypos gui.name_ypos
     ysize gui.namebox_height
 
-    #background Frame("gui/namebox.png", gui.namebox_borders, tile=gui.namebox_tile, xalign=gui.name_xalign)
-    #padding gui.namebox_borders.padding
-
 style say_label:
-    color "#cc0085"
     font gui.name_font
     size gui.name_text_size
     xalign gui.name_xalign
     yalign 0.5
+    color "#ff71ce"
+    outlines [ (0, "#0000003f", 1, 1) ]
 
 style say_dialogue:
     xpos gui.text_xpos
     xanchor gui.text_xalign
     xsize gui.text_width
     ypos gui.text_ypos
+    color "#333"
+    outlines [ (0, "#0000003f", 1, 1) ]
 
     text_align gui.text_xalign
     layout ("subtitle" if gui.text_xalign else "tex")
@@ -180,15 +188,24 @@ style say_dialogue:
 screen input(prompt):
     style_prefix "input"
 
-    window:
+    frame:
+        xalign 0.5
+        yalign 0.5
+        xpadding 24
+        ypadding 48
+        xsize 1000
 
         vbox:
-            xpos gui.text_xpos
-            xanchor gui.text_xalign
-            ypos gui.text_ypos
+            xalign 0.5
+            yalign 0.5
+            spacing 45
 
-            text prompt style "input_prompt"
-            input id "input"
+            label _(prompt):
+                style "input_prompt"
+                xalign 0.5
+
+            input id "input" xalign 0.5
+
 
 
 style input_prompt is default
@@ -197,11 +214,13 @@ style input_prompt:
     xmaximum gui.text_width
     xalign gui.text_xalign
     text_align gui.text_xalign
+    font gui.interface_font
 
 style input:
     xmaximum gui.text_width
     xalign gui.text_xalign
     text_align gui.text_xalign
+    font gui.interface_font
 
 ## Choice screen ###############################################################
 ##
@@ -255,16 +274,15 @@ screen quick_menu():
     if quick_menu:
 
         frame:
-            background "gui/overlay/quick_menu.png"
-            xalign 1.0
-            yalign 1.0
-            left_padding 260
+            background None
+            xsize 1366
+            xalign 0.5
+            yalign 0.99
 
             hbox:
                 style_prefix "quick"
+                xalign 1.0
 
-                textbutton _("Q.Save") action QuickSave()
-                textbutton _("Q.Load") action QuickLoad()
                 textbutton _("Save") action ShowMenu('save')
                 textbutton _("Load") action ShowMenu('load')
                 textbutton _("Log") action ShowMenu('history')
@@ -289,7 +307,6 @@ style quick_button:
 
 style quick_button_text:
     properties gui.button_text_properties("quick_button")
-    hover_color gui.hover_color
 
 ################################################################################
 ## Main and Game Menu Screens
@@ -302,64 +319,51 @@ style quick_button_text:
 
 screen navigation():
 
-    hbox:
-        style_prefix "navigation"
+    frame:
+        background "gui/navigation.png"
+        xalign 0.0
+        yalign 0.0
+        xfill True
+        ysize 32
+        ypadding 0
+        xpadding 32
 
-        xpos gui.navigation_xpos
-        yalign 0.97
+        hbox:
+            style_prefix "navigation"
 
-        if main_menu:
+            imagebutton idle "gui/icon_idle.png" hover "gui/icon_hover.png" selected "gui/icon_hover.png" action ShowMenu("about")
 
-            textbutton _("Start") action Start()
+            if main_menu:
 
-        else:
+                textbutton _("Start") action Start()
 
-            textbutton _("Log") action ShowMenu("history")
+            else:
 
-            text _(" / "):
-                style "navigation_separator"
+                textbutton _("Log") action ShowMenu("history")
 
-            textbutton _("Save") action ShowMenu("save")
+                textbutton _("Save") action ShowMenu("save")
 
-        text _(" / "):
-            style "navigation_separator"
+            textbutton _("Load") action ShowMenu("load")
 
-        textbutton _("Load") action ShowMenu("load")
+            textbutton _("Config") action ShowMenu("preferences")
 
-        text _(" / "):
-            style "navigation_separator"
+            if _in_replay:
 
-        textbutton _("Config") action ShowMenu("preferences")
+                textbutton _("End Replay") action EndReplay(confirm=True)
 
-        if _in_replay:
+            elif not main_menu:
 
-            text _(" / "):
-                style "navigation_separator"
+                textbutton _("Title") action MainMenu()
 
-            textbutton _("End Replay") action EndReplay(confirm=True)
+            #textbutton _("About") action ShowMenu("about")
 
-        elif not main_menu:
+            if renpy.variant("pc"):
 
-            text _(" / "):
-                style "navigation_separator"
+                ## Help isn't necessary or relevant to mobile devices.
+                textbutton _("Help") action ShowMenu("help")
 
-            textbutton _("Main Menu") action MainMenu()
-
-        #textbutton _("About") action ShowMenu("about")
-
-        if renpy.variant("pc"):
-
-            text _(" / "):
-                style "navigation_separator"
-
-            ## Help isn't necessary or relevant to mobile devices.
-            textbutton _("Help") action ShowMenu("help")
-
-            text _(" / "):
-                style "navigation_separator"
-
-            ## The quit button is banned on iOS and unnecessary on Android.
-            textbutton _("Quit") action Quit(confirm=not main_menu)
+                ## The quit button is banned on iOS and unnecessary on Android.
+                textbutton _("Quit") action Quit(confirm=not main_menu)
 
 
 style navigation_button is gui_button
@@ -367,22 +371,29 @@ style navigation_button_text is gui_button_text
 
 style navigation_button:
     size_group None
-    properties gui.button_properties("navigation_button")
+    #properties gui.button_properties("navigation_button")
+    ysize 32
+    xmargin 8
+    idle_background None
+    hover_background "#000"
+    selected_background "#000"
 
 style navigation_button_text:
     properties gui.button_text_properties("navigation_button")
-    font "gui/font/AIRSTREAM.ttf"
-    outlines [ (1, "#ffffff00", 2, 2), (1, "#fff", 0, 0) ]
-    hover_outlines [ (1, "#afe9ff", 2, 2), (1, "#ffcfea", 0, 0) ]
-    hover_color gui.accent_color
-    size 42
+    idle_color "#000"
+    hover_color "#fff"
+    selected_color "#fff"
+    size 18
+    ypos 12
 
-style navigation_separator:
-    yalign 0.5
-    size 42
-    color gui.accent_color
-    font gui.interface_font
-
+style navigation_imagebutton:
+    size_group None
+    #properties gui.button_properties("navigation_button")
+    ysize 32
+    xmargin 8
+    idle_background None
+    hover_background "#000"
+    selected_background "#000"
 
 ## Main Menu screen ############################################################
 ##
@@ -402,9 +413,6 @@ screen main_menu():
     ## This empty frame darkens the main menu.
     frame:
         pass
-
-    frame:
-        style "main_menu_logo"
 
     ## The use statement includes another screen inside this one. The actual
     ## contents of the main menu are in the navigation screen.
@@ -430,8 +438,6 @@ style main_menu_frame:
     ysize 0.2
     xfill True
 
-    background "gui/overlay/navigation.png"
-
 style main_menu_vbox:
     xalign 1.0
     xoffset -30
@@ -448,11 +454,6 @@ style main_menu_text:
 
 style main_menu_title:
     size gui.title_text_size
-
-style main_menu_logo:
-    ysize 0.2
-
-    background "logo.png"
 
 
 ## Game Menu screen ############################################################
@@ -475,6 +476,13 @@ screen game_menu(title, scroll=None):
 
     frame:
         style "game_menu_outer_frame"
+
+        label title
+
+        textbutton _("x"):
+            style "return_square_button"
+
+            action Return()
 
         vbox:
 
@@ -522,8 +530,6 @@ screen game_menu(title, scroll=None):
 
         action Return()
 
-    label title
-
     if main_menu:
         key "game_menu" action ShowMenu("main_menu")
 
@@ -542,48 +548,64 @@ style return_button is navigation_button
 style return_button_text is navigation_button_text
 
 style game_menu_outer_frame:
-    bottom_padding 180
-    top_padding 120
-    left_padding 320
-
-    #background "gui/overlay/game_menu.png"
+    background "gui/game_menu.png"
+    xsize 1440
+    ysize 800
+    xpos 120
+    ypos 120
 
 style game_menu_navigation_frame:
-    ysize 0.2
+    ysize 32
     xfill True
     
-    background "gui/overlay/navigation.png"
-
 style game_menu_content_frame:
-    left_margin 60
-    right_margin 30
-    top_margin 15
+    top_margin 67
+    bottom_margin 36
+    right_margin 2
+    left_padding 24
 
 style game_menu_viewport:
-    xsize 1380
+    xsize 1400
+    yfill True 
+    bottom_padding 100
 
 style game_menu_vscrollbar:
-    unscrollable gui.unscrollable
+     unscrollable gui.unscrollable
 
 style game_menu_side:
     spacing 15
 
 style game_menu_label:
-    xpos 75
-    ysize 180
+    xalign 0.5
+    ypos 4
+    xpadding 12
+    ypadding 2
+    text_align 0.5
+    background "#ffffff"
 
 style game_menu_label_text:
     size gui.title_text_size
-    color gui.accent_color
-    yalign 0.5
-    font "gui/font/AIRSTREAM.ttf"
-    outlines [ (2, "#afe9ff", 1, 1), (1, "#fff", 0, 0) ]
-    hover_outlines [ (2, "#ff71ce", 1, 1), (1, "#fff", 0, 0) ]
+    color "#000"
+    text_align 0.5
 
 style return_button:
-    xalign 0.9
-    yalign 0.95
+    xalign 0.99
+    yalign 0.0
 
+style return_square_button:
+    background None
+    xsize 18
+    ysize 18
+    xpos 20
+    ypos 4
+
+style return_square_button_text:
+    font "gui/font/RobotoMono-Regular.ttf"
+    idle_color "#ccc"
+    hover_color "#000"
+    size 29
+    xalign 0.5
+    yalign 0.5
 
 ## About screen ################################################################
 ##
@@ -626,6 +648,8 @@ style about_text is gui_text
 style about_label_text:
     size gui.label_text_size
 
+style about_text:
+    size gui.text_size
 
 ## Load and Save screens #######################################################
 ##
@@ -652,27 +676,23 @@ screen load():
 
 screen file_slots(title):
 
-    default page_name_value = FilePageNameInputValue(pattern=_("Page {}"), auto=_("Automatic saves"), quick=_("Quick saves"))
+    default page_name_value = FilePageNameInputValue(pattern=_("Page {}"), quick=_("Quick saves"))
 
-    use game_menu(title):
+    use game_menu(title, scroll="viewport"):
 
-        fixed:
-
-            ## This ensures the input will get the enter event before any of the
-            ## buttons do.
-            order_reverse True
-
-            ## The page name, which can be edited by clicking on a button.
-            #button:
-            #    style "page_label"
-            #
-            #    key_events True
-            #    xalign 0.5
-            #    action page_name_value.Toggle()
-            #
-            #    input:
-            #        style "page_label_text"
-            #        value page_name_value
+        ## The page name, which can be edited by clicking on a button.
+        button:
+            style "page_label"
+        
+            key_events True
+            xalign 0.0
+            action page_name_value.Toggle()
+        
+            input:
+                style "page_label_text"
+                value page_name_value
+        frame:
+            background None
 
             ## The grid of file slots.
             grid gui.file_slot_cols gui.file_slot_rows:
@@ -687,55 +707,26 @@ screen file_slots(title):
 
                     $ slot = i + 1
 
-                    button:
-                        action FileAction(slot)
+                    frame:
+                        background None
+                        bottom_padding 60
 
-                        has vbox
+                        button:
+                            action FileAction(slot)
+                            top_padding 2
+                            xpadding 0
 
-                        frame:
-                            background "#ffffff"
-                            xfill True
-                            ysize 32
+                            has vbox
+
+                            add FileScreenshot(slot) xpos 2
+
+                            key "save_delete" action FileDelete(slot)
+
+                            text FileSaveName(slot):
+                                style "slot_name_text"
+
                             text FileTime(slot, format=_("{#file_time}%b %d %Y %H:%M"), empty=_("404")):
-                                style "slot_time_text"
-                            textbutton _("☒") action FileDelete(slot):
-                                style "slot_delete_button"
-                            yalign 0.0
-                            xalign 0.0
-
-                        add FileScreenshot(slot) xalign 0.5 yalign 0.0
-
-                        text FileSaveName(slot):
-                            style "slot_name_text"
-
-                        key "save_delete" action FileDelete(slot)
-
-            frame:
-                background "#ffffffcf"
-                xpadding 0
-                ypadding 0
-
-                xalign 0.4
-                yalign 0.9
-
-                ## Buttons to access other pages.
-                hbox:
-                    style_prefix "page"
-
-                    spacing gui.page_spacing
-
-                    textbutton _("←") action FilePagePrevious() text_font "DejaVuSans.ttf"
-
-                    textbutton _("{#auto_page}Auto") action FilePage("auto")
-
-                    textbutton _("{#quick_page}Quick") action FilePage("quick")
-
-                    ## range(1, 10) gives the numbers from 1 to 9.
-                    for page in range(1, 10):
-                        textbutton "[page]" action FilePage(page)
-
-                    textbutton _("→") action FilePageNext(max=9) text_font "DejaVuSans.ttf"
-
+                                    style "slot_time_text"                        
 
 
 style page_label is gui_label
@@ -751,13 +742,16 @@ style slot_delete_button is gui_button
 style slot_delete_button_text is gui_button_text
 
 style page_label:
-    xpadding 75
-    ypadding 5
+    xpadding 4
+    ypadding 2
+    background "#fff"
+    ypos -34
 
 style page_label_text:
-    text_align 0.5
+    text_align 0.0
     layout "subtitle"
-    hover_color gui.hover_color
+    color "#000000"
+    size 16
 
 style page_button:
     properties gui.button_properties("page_button")
@@ -770,21 +764,9 @@ style slot_button:
 
 style slot_button_text:
     properties gui.button_text_properties("slot_button")
-    idle_color "#ffffff"
-    hover_color gui.selected_color
-
-style slot_delete_button:
-    background None
-    right_margin -7
-    xalign 1.0
-    ypos -16
-
-style slot_delete_button_text:
-    properties gui.button_text_properties("slot_button")
-    font "DejaVuSans.ttf"
-    idle_color gui.idle_color
-    hover_color gui.selected_color
-    size 24
+    color "#000000"
+    size 18 
+    ysize 32
 
 ## Preferences screen ##########################################################
 ##
@@ -802,13 +784,12 @@ screen preferences():
     else:
         $ cols = 4
 
-    use game_menu(_("Config"), scroll="viewport"):
+    use game_menu(_("Config")):
 
         frame:
-            background "#ffffffcf"
-            xpadding 48
-            ypadding 24
-
+            background None
+            top_margin 30
+            left_margin 30
             vbox:
                 xfill True
 
@@ -923,11 +904,10 @@ style pref_label:
 
 style pref_label_text:
     yalign 1.0
-    outlines [ (2, "#afe9ff", 1, 1), (1, "#fff", 0, 0) ]
-    font "gui/font/AIRSTREAM.ttf"
+    size 24
 
 style pref_vbox:
-    xsize 338
+    xsize 420
 
 style radio_vbox:
     spacing gui.pref_button_spacing
@@ -935,9 +915,11 @@ style radio_vbox:
 style radio_button:
     properties gui.button_properties("radio_button")
     foreground "gui/button/check_[prefix_]foreground.png"
+    background None
 
 style radio_button_text:
     properties gui.button_text_properties("radio_button")
+    size 20
 
 style check_vbox:
     spacing gui.pref_button_spacing
@@ -945,12 +927,14 @@ style check_vbox:
 style check_button:
     properties gui.button_properties("check_button")
     foreground "gui/button/check_[prefix_]foreground.png"
+    background None
 
 style check_button_text:
     properties gui.button_text_properties("check_button")
+    size 20
 
 style slider_slider:
-    xsize 525
+    xsize 480
 
 style slider_button:
     properties gui.button_properties("slider_button")
@@ -959,9 +943,10 @@ style slider_button:
 
 style slider_button_text:
     properties gui.button_text_properties("slider_button")
+    size 20
 
 style slider_vbox:
-    xsize 675
+    xsize 600
 
 
 ## History screen ##############################################################
@@ -984,7 +969,8 @@ screen history():
         style_prefix "history"
 
         frame:
-            background "#ffffffcf"
+            background None
+            ypos 100
 
             vbox:
 
@@ -1036,6 +1022,7 @@ style history_name:
 style history_name_text:
     min_width gui.history_name_width
     text_align gui.history_name_xalign
+    size gui.text_size
 
 style history_text:
     xpos gui.history_text_xpos
@@ -1045,6 +1032,7 @@ style history_text:
     min_width gui.history_text_width
     text_align gui.history_text_xalign
     layout ("subtitle" if gui.history_text_xalign else "tex")
+    size gui.text_size
 
 style history_label:
     xfill True
@@ -1065,136 +1053,140 @@ screen help():
 
     default device = "keyboard"
 
-    use game_menu(_("Help"), scroll="viewport"):
+    use game_menu(_("Help")):
 
         style_prefix "help"
 
-        vbox:
-            hbox:
+        frame:
+            background None
+            top_margin 30
+            left_margin 30
 
-                textbutton _("Keyboard") action SetScreenVariable("device", "keyboard")
-                textbutton _("Mouse") action SetScreenVariable("device", "mouse")
+            vbox:
 
-                if GamepadExists():
-                    textbutton _("Gamepad") action SetScreenVariable("device", "gamepad")
+                hbox:
 
-            if device == "keyboard":
-                use keyboard_help
-            elif device == "mouse":
-                use mouse_help
-            elif device == "gamepad":
-                use gamepad_help
+                    textbutton _("Keyboard") action SetScreenVariable("device", "keyboard")
+                    textbutton _("Mouse") action SetScreenVariable("device", "mouse")
+
+                    if GamepadExists():
+                        textbutton _("Gamepad") action SetScreenVariable("device", "gamepad")
+
+                frame:
+                    background None
+                    ymargin 40
+
+                    if device == "keyboard":
+                        use keyboard_help
+                    elif device == "mouse":
+                        use mouse_help
+                    elif device == "gamepad":
+                        use gamepad_help
 
 
 screen keyboard_help():
-
-    frame:
         
-        vbox:
+    vbox:
 
-            hbox:
-                label _("Enter")
-                text _("Advances dialogue and activates the interface.")
+        hbox:
+            label _("Enter")
+            text _("Advances dialogue and activates the interface.")
 
-            hbox:
-                label _("Space")
-                text _("Advances dialogue without selecting choices.")
+        hbox:
+            label _("Space")
+            text _("Advances dialogue without selecting choices.")
 
-            hbox:
-                label _("Arrow Keys")
-                text _("Navigate the interface.")
+        hbox:
+            label _("Arrow Keys")
+            text _("Navigate the interface.")
 
-            hbox:
-                label _("Escape")
-                text _("Accesses the game menu.")
+        hbox:
+            label _("Escape")
+            text _("Accesses the game menu.")
 
-            hbox:
-                label _("Ctrl")
-                text _("Skips dialogue while held down.")
+        hbox:
+            label _("Ctrl")
+            text _("Skips dialogue while held down.")
 
-            hbox:
-                label _("Tab")
-                text _("Toggles dialogue skipping.")
+        hbox:
+            label _("Tab")
+            text _("Toggles dialogue skipping.")
 
-            hbox:
-                label _("Page Up")
-                text _("Rolls back to earlier dialogue.")
+        hbox:
+            label _("Page Up")
+            text _("Rolls back to earlier dialogue.")
 
-            hbox:
-                label _("Page Down")
-                text _("Rolls forward to later dialogue.")
+        hbox:
+            label _("Page Down")
+            text _("Rolls forward to later dialogue.")
 
-            hbox:
-                label "H"
-                text _("Hides the user interface.")
+        hbox:
+            label "H"
+            text _("Hides the user interface.")
 
-            hbox:
-                label "S"
-                text _("Takes a screenshot.")
+        hbox:
+            label "S"
+            text _("Takes a screenshot.")
 
-            hbox:
-                label "V"
-                text _("Toggles assistive {a=https://www.renpy.org/l/voicing}self-voicing{/a}.")
+        hbox:
+            label "V"
+            text _("Toggles assistive {a=https://www.renpy.org/l/voicing}self-voicing{/a}.")
 
 
 screen mouse_help():
 
-    frame:
+    vbox:
 
-        vbox:
+        hbox:
+            label _("Left Click")
+            text _("Advances dialogue and activates the interface.")
 
-            hbox:
-                label _("Left Click")
-                text _("Advances dialogue and activates the interface.")
+        hbox:
+            label _("Middle Click")
+            text _("Hides the user interface.")
 
-            hbox:
-                label _("Middle Click")
-                text _("Hides the user interface.")
+        hbox:
+            label _("Right Click")
+            text _("Accesses the game menu.")
 
-            hbox:
-                label _("Right Click")
-                text _("Accesses the game menu.")
+        hbox:
+            label _("Mouse Wheel Up")
+            text _("Rolls back to earlier dialogue.")
 
-            hbox:
-                label _("Mouse Wheel Up")
-                text _("Rolls back to earlier dialogue.")
-
-            hbox:
-                label _("Mouse Wheel Down")
-                text _("Rolls forward to later dialogue.")
+        hbox:
+            label _("Mouse Wheel Down")
+            text _("Rolls forward to later dialogue.")
 
 
 screen gamepad_help():
 
-    frame: 
+    vbox:
 
-        vbox:
+        hbox:
+            label _("Right Trigger\nA/Bottom Button")
+            text _("Advances dialogue and activates the interface.")
 
-            hbox:
-                label _("Right Trigger\nA/Bottom Button")
-                text _("Advances dialogue and activates the interface.")
+        hbox:
+            label _("Left Trigger\nLeft Shoulder")
+            text _("Rolls back to earlier dialogue.")
 
-            hbox:
-                label _("Left Trigger\nLeft Shoulder")
-                text _("Rolls back to earlier dialogue.")
+        hbox:
+            label _("Right Shoulder")
+            text _("Rolls forward to later dialogue.")
 
-            hbox:
-                label _("Right Shoulder")
-                text _("Rolls forward to later dialogue.")
+        hbox:
+            label _("D-Pad, Sticks")
+            text _("Navigate the interface.")
 
-            hbox:
-                label _("D-Pad, Sticks")
-                text _("Navigate the interface.")
+        hbox:
+            label _("Start, Guide")
+            text _("Accesses the game menu.")
 
-            hbox:
-                label _("Start, Guide")
-                text _("Accesses the game menu.")
+        hbox:
+            label _("Y/Top Button")
+            text _("Hides the user interface.")
 
-            hbox:
-                label _("Y/Top Button")
-                text _("Hides the user interface.")
-
-            textbutton _("Calibrate") action GamepadCalibrate()
+        textbutton _("Calibrate") action GamepadCalibrate()
 
 
 style help_button is gui_button
@@ -1205,20 +1197,15 @@ style help_text is gui_text
 
 style help_button:
     properties gui.button_properties("help_button")
-    xpadding 24
-    ysize 80
-    selected_background "#ffffffcf"
-    background "#ffffff6f"
+    xmargin 20
+    xpadding 48
 
 style help_button_text:
     properties gui.button_text_properties("help_button")
-    color "#ff71ce"
-    selected_color gui.selected_color
-    outlines [ (1, "#ffffff00", 2, 2), (1, "#fff", 0, 0) ]
-    hover_outlines [ (1, "#afe9ff", 2, 2), (1, "#ffcfea", 0, 0) ]
-    selected_outlines [ (1, "#ffffff00", 2, 2), (1, "#fff", 0, 0) ]
-    hover_color "#ff71ce"
-    font "gui/font/AIRSTREAM.ttf"
+    color "#000"
+    hover_color "#fff"
+    selected_color "#fff"
+    size 24
 
 style help_label:
     xsize 320
@@ -1230,11 +1217,9 @@ style help_label_text:
     text_align 0.0
     color gui.accent_color
 
-style help_frame:
-    background "#ffffffcf"
-    xfill True
-    xpadding 120
-    ypadding 48
+style help_text:
+    size gui.text_size
+
 
 ################################################################################
 ## Additional screens
@@ -1257,7 +1242,7 @@ screen confirm(message, yes_action, no_action):
 
     style_prefix "confirm"
 
-    add "gui/overlay/confirm.png"
+    #add "gui/overlay/confirm.png"
 
     frame:
 
@@ -1299,10 +1284,13 @@ style confirm_prompt_text:
 
 style confirm_button:
     properties gui.button_properties("confirm_button")
+    xsize 240
 
 style confirm_button_text:
     properties gui.button_text_properties("confirm_button")
-
+    idle_color "#000"
+    hover_color "#fff"
+    selected_color "#fff"
 
 ## Skip indicator screen #######################################################
 ##
@@ -1348,7 +1336,8 @@ style skip_triangle is skip_text
 
 style skip_frame:
     ypos gui.skip_ypos
-    background Frame("gui/skip.png", gui.skip_frame_borders, tile=gui.frame_tile)
+    background "#ffffffef"
+    #background Frame("gui/skip.png", gui.skip_frame_borders, tile=gui.frame_tile)
     padding gui.skip_frame_borders.padding
 
 style skip_text:
@@ -1395,7 +1384,8 @@ style notify_frame:
     xalign 1.0
     text_align 1.0
 
-    background Frame("gui/notify.png", gui.notify_frame_borders, tile=gui.frame_tile)
+    background "#ffffffef"
+    #background Frame("gui/notify.png", gui.notify_frame_borders, tile=gui.frame_tile)
     padding gui.notify_frame_borders.padding
     
 style notify_text:
@@ -1522,6 +1512,14 @@ style nvl_button_text:
 
 
 ################################################################################
+## Splash screen
+################################################################################
+
+label splashscreen:
+    return
+
+
+################################################################################
 ## Mobile Variants
 ################################################################################
 
@@ -1537,7 +1535,6 @@ screen quick_menu():
     zorder 100
 
     frame:
-        background "gui/overlay/quick_menu.png"
         xalign 1.0
         yalign 1.0
         left_padding 260
@@ -1554,7 +1551,12 @@ screen quick_menu():
 
 style window:
     variant "small"
-    background "gui/phone/textbox.png"
+    #background "gui/phone/textbox.png"
+    xalign 0.5
+    xfill True
+    yalign gui.textbox_yalign
+    ysize gui.textbox_height
+    background "#ffffff"
 
 style nvl_window:
     variant "small"
@@ -1587,7 +1589,3 @@ style slider_pref_vbox:
 style slider_pref_slider:
     variant "small"
     xsize 900
-
-
-
-
