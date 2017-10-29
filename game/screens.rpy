@@ -38,7 +38,6 @@ style button_text is gui_text:
     properties gui.button_text_properties("button")
     yalign 0.5
 
-
 style label_text is gui_text:
     color gui.accent_color
     size gui.label_text_size
@@ -189,15 +188,24 @@ style say_dialogue:
 screen input(prompt):
     style_prefix "input"
 
-    window:
+    frame:
+        xalign 0.5
+        yalign 0.5
+        xpadding 24
+        ypadding 48
+        xsize 1000
 
         vbox:
-            xpos gui.text_xpos
-            xanchor gui.text_xalign
-            ypos gui.text_ypos
+            xalign 0.5
+            yalign 0.5
+            spacing 45
 
-            text prompt style "input_prompt"
-            input id "input"
+            label _(prompt):
+                style "input_prompt"
+                xalign 0.5
+
+            input id "input" xalign 0.5
+
 
 
 style input_prompt is default
@@ -206,11 +214,13 @@ style input_prompt:
     xmaximum gui.text_width
     xalign gui.text_xalign
     text_align gui.text_xalign
+    font gui.interface_font
 
 style input:
     xmaximum gui.text_width
     xalign gui.text_xalign
     text_align gui.text_xalign
+    font gui.interface_font
 
 ## Choice screen ###############################################################
 ##
@@ -321,7 +331,7 @@ screen navigation():
         hbox:
             style_prefix "navigation"
 
-            imagebutton idle "gui/icon.png" action ShowMenu("about")
+            imagebutton idle "gui/icon_idle.png" hover "gui/icon_hover.png" selected "gui/icon_hover.png" action ShowMenu("about")
 
             if main_menu:
 
@@ -365,16 +375,25 @@ style navigation_button:
     ysize 32
     xmargin 8
     idle_background None
-    hover_background None
+    hover_background "#000"
     selected_background "#000"
 
 style navigation_button_text:
     properties gui.button_text_properties("navigation_button")
     idle_color "#000"
+    hover_color "#fff"
     selected_color "#fff"
     size 18
-    ypos 8
+    ypos 12
 
+style navigation_imagebutton:
+    size_group None
+    #properties gui.button_properties("navigation_button")
+    ysize 32
+    xmargin 8
+    idle_background None
+    hover_background "#000"
+    selected_background "#000"
 
 ## Main Menu screen ############################################################
 ##
@@ -394,9 +413,6 @@ screen main_menu():
     ## This empty frame darkens the main menu.
     frame:
         pass
-
-    frame:
-        style "main_menu_logo"
 
     ## The use statement includes another screen inside this one. The actual
     ## contents of the main menu are in the navigation screen.
@@ -439,10 +455,6 @@ style main_menu_text:
 style main_menu_title:
     size gui.title_text_size
 
-style main_menu_logo:
-    ysize 0.2
-
-    background "logo.png"
 
 ## Game Menu screen ############################################################
 ##
@@ -536,7 +548,7 @@ style return_button is navigation_button
 style return_button_text is navigation_button_text
 
 style game_menu_outer_frame:
-    background "gui/game_menu__.png"
+    background "gui/game_menu.png"
     xsize 1440
     ysize 800
     xpos 120
@@ -1191,6 +1203,7 @@ style help_button:
 style help_button_text:
     properties gui.button_text_properties("help_button")
     color "#000"
+    hover_color "#fff"
     selected_color "#fff"
     size 24
 
@@ -1229,7 +1242,7 @@ screen confirm(message, yes_action, no_action):
 
     style_prefix "confirm"
 
-    add "gui/overlay/confirm.png"
+    #add "gui/overlay/confirm.png"
 
     frame:
 
@@ -1275,6 +1288,9 @@ style confirm_button:
 
 style confirm_button_text:
     properties gui.button_text_properties("confirm_button")
+    idle_color "#000"
+    hover_color "#fff"
+    selected_color "#fff"
 
 ## Skip indicator screen #######################################################
 ##
@@ -1500,12 +1516,6 @@ style nvl_button_text:
 ################################################################################
 
 label splashscreen:
-    scene black
-    pause 1
-    scene splash with dissolve
-    pause 2
-    scene black with dissolve
-    pause 1
     return
 
 
@@ -1525,7 +1535,6 @@ screen quick_menu():
     zorder 100
 
     frame:
-        background "gui/overlay/quick_menu.png"
         xalign 1.0
         yalign 1.0
         left_padding 260
@@ -1542,7 +1551,12 @@ screen quick_menu():
 
 style window:
     variant "small"
-    background "gui/phone/textbox.png"
+    #background "gui/phone/textbox.png"
+    xalign 0.5
+    xfill True
+    yalign gui.textbox_yalign
+    ysize gui.textbox_height
+    background "#ffffff"
 
 style nvl_window:
     variant "small"

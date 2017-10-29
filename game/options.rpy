@@ -12,7 +12,7 @@
 ##
 ## The _() surrounding the string marks it as eligible for translation.
 
-define config.name = _("analog-mall")
+define config.name = _("macintosh-og")
 
 
 ## Determines if the title given above is shown on the main menu screen. Set
@@ -36,7 +36,7 @@ define gui.about = _("")
 ## distribution. This must be ASCII-only, and must not contain spaces, colons,
 ## or semicolons.
 
-define build.name = "analog-mall"
+define build.name = "macintosh-og"
 
 
 ## Sounds and music ############################################################
@@ -46,7 +46,7 @@ define build.name = "analog-mall"
 
 define config.has_sound = True
 define config.has_music = True
-define config.has_voice = False
+define config.has_voice = True
 
 
 ## To allow the user to play a test sound on the sound or voice channel,
@@ -71,16 +71,16 @@ define config.main_menu_music = "audio/bgm01.mp3"
 
 ## Entering or exiting the game menu.
 
-define config.enter_transition = Pixellate(0.4, 5)
-define config.exit_transition = Pixellate(0.4, 5)
+define config.enter_transition = None
+define config.exit_transition = None
 
 ## A transition that is used after a game has been loaded.
 
-define config.after_load_transition = Pixellate(0.4, 5)
+define config.after_load_transition = None
 
 ## Used when entering the main menu after the game has ended.
 
-define config.end_game_transition = Pixellate(0.4, 5)
+define config.end_game_transition = None
 
 ## A variable to set the transition used when the game starts does not exist.
 ## Instead, use a with statement after showing the initial scene.
@@ -101,8 +101,8 @@ define config.window = "auto"
 
 ## Transitions used to show and hide the dialogue window
 
-define config.window_show_transition = Dissolve(0.2)
-define config.window_hide_transition = Dissolve(0.2)
+define config.window_show_transition = None
+define config.window_hide_transition = None
 
 
 ## Preference defaults #########################################################
@@ -133,7 +133,7 @@ default preferences.afm_time = 15
 ## This generally should not be changed, and if it is, should always be a
 ## literal string, not an expression.
 
-define config.save_directory = "analog-mall-1507740267"
+define config.save_directory = "macintosh-og-1507740267"
 define config.has_quicksave = False
 define config.has_autosave = False
 
